@@ -2,7 +2,7 @@ import { useState } from 'react';
 import TaskItem from "../taskItem/TaskItem";
 import { StyledSection, Container, AppTitle, StyledList } from "./styled";
 import NewTask from '../newTask/NewTask';
-
+import Filter from '../Filter/Filter';
 interface Task {
     id: number;
     text: string;
@@ -11,11 +11,26 @@ interface Task {
 }
 
 const CATEGORIES = ['Работа', 'Личное', 'Учеба'];
+const FILTER_OPTIONS = ['Все задачи', 'Выполненные задачи', 'Невыполненные задачи'];
+type FilterOption = typeof FILTER_OPTIONS[number];
 
 const TaskList = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [value, setValue] = useState('');
     const [category, setCategory] = useState(CATEGORIES[0]);
+    const [selected, setSelected] = useState<FilterOption | ''>('');
+    const visibleTasks = tasks.filter((task: Task) => {
+        if (!selected || selected === 'Все задачи') {
+            return true;
+        }
+        if (selected === 'Выполненные задачи') {
+            return task.completed === true;
+        }
+        if (selected === 'Невыполненные задачи') {
+            return task.completed === false;
+        }
+        return true;
+    });
 
     const addTask = () => {
         if (value.trim()) {
@@ -45,8 +60,9 @@ const TaskList = () => {
         <StyledSection>
             <Container>
                 <AppTitle>ToDo List</AppTitle>
+                <Filter selected={selected} setSelected={setSelected as (option: string) => void} options={FILTER_OPTIONS} />
                 <StyledList>
-                    {tasks.map(task => (
+                    {visibleTasks.map(task => (
                         <TaskItem
                             key={task.id}
                             text={task.text}

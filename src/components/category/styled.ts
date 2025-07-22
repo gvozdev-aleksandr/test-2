@@ -7,7 +7,7 @@ export const CategoryWrapper = styled.div`
 `;
 
 interface StyledRadioProps {
-    isSelected: boolean;
+    $isSelected: boolean;
 }
 
 export const HiddenRadio = styled.input.attrs({ type: 'checkbox' })`
@@ -22,8 +22,7 @@ export const StyledRadio = styled.div<StyledRadioProps>`
   flex-grow: 1;
   display: inline-block;
   padding: 5px;
-  background: ${props => (props.isSelected ? props.theme.bgButtonHover : props.theme.bgButton)};
-  //border-radius: 4px;
+  background: ${props => (props.$isSelected ? props.theme.bgButtonHover : props.theme.bgButton)};
   transition: all 0.2s;
   border: 1px solid ${({ theme }) => theme.bgSection};
 

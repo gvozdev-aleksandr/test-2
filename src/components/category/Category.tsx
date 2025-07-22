@@ -18,7 +18,7 @@ const Category = ({ categories, selectedCategory, onCategoryChange }: CategoryPr
             checked={selectedCategory === cat}
             onChange={() => onCategoryChange(cat)}
           />
-          <StyledRadio isSelected={selectedCategory === cat}>{cat}</StyledRadio>
+          <StyledRadio $isSelected={selectedCategory === cat}>{cat}</StyledRadio>
         </RadioContainer>
       ))}
     </CategoryWrapper>
