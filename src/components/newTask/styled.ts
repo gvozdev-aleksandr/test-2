@@ -4,6 +4,7 @@ export const InputContainer = styled.div`
     display: flex;
     clip-path: inset(0 round 10px);
     background-color: blue;
+    margin-bottom: 20px;
 `;
 
 export const StyledInput = styled.input.attrs({ type: 'text' })`

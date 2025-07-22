@@ -28,3 +28,12 @@ export const StyledList = styled.ul`
     gap: 20px;
     margin-bottom: 20px;
 `;
+
+export const EmptyList = styled.div`
+    text-align: center;
+    padding: 40px;
+    color: ${({ theme }) => theme.secondaryTextColor};
+    background-color: ${({ theme }) => theme.bgModal};
+    text-transform: uppercase;
+    font-size: 24px;
+`;

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import TaskItem from "../taskItem/TaskItem";
-import { StyledSection, Container, AppTitle, StyledList } from "./styled";
+import { StyledSection, Container, AppTitle, StyledList, EmptyList } from "./styled";
 import NewTask from '../newTask/NewTask';
 import Filter from '../Filter/Filter';
+import Statistic from '../statistic/Statistic';
 interface Task {
     id: number;
     text: string;
@@ -15,10 +16,18 @@ const FILTER_OPTIONS = ['Все задачи', 'Выполненные зада�
 type FilterOption = typeof FILTER_OPTIONS[number];
 
 const TaskList = () => {
-    const [tasks, setTasks] = useState<Task[]>([]);
+    const [tasks, setTasks] = useState<Task[]>(() => {
+        const savedTasks = localStorage.getItem('tasks');
+        return savedTasks ? JSON.parse(savedTasks) : [];
+    });
     const [value, setValue] = useState('');
     const [category, setCategory] = useState(CATEGORIES[0]);
     const [selected, setSelected] = useState<FilterOption | ''>('');
+
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }, [tasks]);
+
     const visibleTasks = tasks.filter((task: Task) => {
         if (!selected || selected === 'Все задачи') {
             return true;
@@ -31,6 +40,21 @@ const TaskList = () => {
         }
         return true;
     });
+
+    const [realizeCount, unrealizeCount] = useMemo(() => {
+        let realized = 0;
+        let unrealized = 0;
+
+        tasks.forEach(task => {
+            if (task.completed) {
+                realized++;
+            } else {
+                unrealized++;
+            }
+        });
+
+        return [realized, unrealized];
+    }, [tasks]);
 
     const addTask = () => {
         if (value.trim()) {
@@ -62,16 +86,20 @@ const TaskList = () => {
                 <AppTitle>ToDo List</AppTitle>
                 <Filter selected={selected} setSelected={setSelected as (option: string) => void} options={FILTER_OPTIONS} />
                 <StyledList>
-                    {visibleTasks.map(task => (
-                        <TaskItem
-                            key={task.id}
-                            text={task.text}
-                            category={task.category}
-                            completed={task.completed}
-                            onChange={() => handleToggle(task.id)}
-                            onDelete={() => handleDelete(task.id)}
-                        />
-                    ))}
+                    {visibleTasks.length > 0 ? (
+                        visibleTasks.map(task => (
+                            <TaskItem
+                                key={task.id}
+                                text={task.text}
+                                category={task.category}
+                                completed={task.completed}
+                                onChange={() => handleToggle(task.id)}
+                                onDelete={() => handleDelete(task.id)}
+                            />
+                        ))
+                    ) : (
+                        <EmptyList>Список задач пуст</EmptyList>
+                    )}
                 </StyledList>
                 <NewTask
                     value={value}
@@ -81,6 +109,7 @@ const TaskList = () => {
                     selectedCategory={category}
                     onCategoryChange={setCategory}
                 />
+                <Statistic realize={realizeCount} unrealize={unrealizeCount} />
             </Container>
         </StyledSection>
     );
