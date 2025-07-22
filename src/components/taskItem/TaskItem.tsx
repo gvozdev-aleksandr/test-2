@@ -12,7 +12,7 @@ interface TaskItemProps {
 
 const TaskItem: FC<TaskItemProps> = ({      
   text = 'Привет',
-  category = 'Без категории',
+  category,
   completed, 
   onChange,
   onDelete

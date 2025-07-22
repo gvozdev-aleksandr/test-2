@@ -3,8 +3,7 @@ import { GlobalStyle } from "./styled"
 function App() {
   return (
     <>    
-      <GlobalStyle/>  
-      <h1>Test ToDo list</h1> 
+      <GlobalStyle/>       
       <TaskList/>     
     </>
   )

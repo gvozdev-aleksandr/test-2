@@ -1,24 +1,29 @@
 import { useState } from 'react';
 import TaskItem from "../taskItem/TaskItem";
-import { StyledSection, Container, StyledList } from "./styled";
+import { StyledSection, Container, AppTitle, StyledList } from "./styled";
 import NewTask from '../newTask/NewTask';
 
 interface Task {
     id: number;
     text: string;
     completed: boolean;
+    category: string;
 }
+
+const CATEGORIES = ['Работа', 'Личное', 'Учеба'];
 
 const TaskList = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [value, setValue] = useState('');
+    const [category, setCategory] = useState(CATEGORIES[0]);
 
     const addTask = () => {
         if (value.trim()) {
             setTasks([...tasks, {
                 id: Date.now(),
                 text: value,
-                completed: false
+                completed: false,
+                category: category
             }]);
             setValue('');
         }
@@ -39,11 +44,13 @@ const TaskList = () => {
     return (
         <StyledSection>
             <Container>
+                <AppTitle>ToDo List</AppTitle>
                 <StyledList>
                     {tasks.map(task => (
                         <TaskItem
                             key={task.id}
                             text={task.text}
+                            category={task.category}
                             completed={task.completed}
                             onChange={() => handleToggle(task.id)}
                             onDelete={() => handleDelete(task.id)}
@@ -52,8 +59,11 @@ const TaskList = () => {
                 </StyledList>
                 <NewTask
                     value={value}
-                    onAdd={addTask}
                     onChange={(e) => setValue(e.target.value)}
+                    onAdd={addTask}
+                    categories={CATEGORIES}
+                    selectedCategory={category}
+                    onCategoryChange={setCategory}
                 />
             </Container>
         </StyledSection>

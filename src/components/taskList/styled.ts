@@ -6,15 +6,18 @@ export const StyledSection = styled.section`
 
 export const Container = styled.div`
     min-width: ${({ theme }) => theme.mobileWidth};
-    width: 100%;
-    padding: ${({ theme }) => theme.mobilePaddingX} ${({ theme }) => theme.mobilePaddingY};
-    margin: 0 auto;
+    width: 100%;    
+    margin: 0 auto;    
+    max-width: ${({ theme }) => theme.maxWidth};
+    padding-block: ${({ theme }) => theme.desktopPaddingY};
+    padding-inline: clamp(40px, 40px + 30 * (100vw - 600px) / 600, 70px);      
+`;
 
-    @media (min-width: ${({ theme }) => theme.desktopWidth}) {
-        max-width: ${({ theme }) => theme.maxWidth};
-        padding-block: ${({ theme }) => theme.desktopPaddingY};
-        padding-inline: clamp(40px, 40px + 30 * (100vw - 600px) / 600, 70px);         
-    } 
+export const AppTitle = styled.h1`
+    margin: 0;
+    margin-bottom: 40px;
+    color: ${({ theme }) => theme.secondaryTextColor};
+    text-align: center;
 `;
 
 export const StyledList = styled.ul`
