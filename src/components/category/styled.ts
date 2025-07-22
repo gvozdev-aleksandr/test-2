@@ -3,14 +3,13 @@ import styled from "styled-components";
 export const CategoryWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    background-color: blue;
 `;
 
 interface StyledRadioProps {
     $isSelected: boolean;
 }
 
-export const HiddenRadio = styled.input.attrs({ type: 'checkbox' })`
+export const HiddenRadio = styled.input.attrs({ type: 'radio' })`
   position: absolute;
   opacity: 0;
   cursor: pointer;

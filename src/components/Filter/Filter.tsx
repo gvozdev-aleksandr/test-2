@@ -46,7 +46,7 @@ function Filter({ selected, setSelected, options }: FilterProps) {
                 aria-haspopup="listbox"
                 aria-expanded={isOpen}
             >
-                {selected || 'Выберите категорию'}
+                {selected || 'Все задачи'}
             </SelectButton>
             {isOpen && (
                 <DropDownList role="listbox">

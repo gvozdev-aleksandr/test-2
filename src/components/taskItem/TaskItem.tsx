@@ -11,7 +11,7 @@ interface TaskItemProps {
 }
 
 const TaskItem: FC<TaskItemProps> = ({      
-  text = 'Привет',
+  text,
   category,
   completed, 
   onChange,
@@ -19,23 +19,23 @@ const TaskItem: FC<TaskItemProps> = ({
 }) => {
   return (
     <StyledItem>
-        <TaskText>{text}</TaskText>
-        <TaskCategory>{category}</TaskCategory>
+        {category && <TaskCategory>{category}</TaskCategory>}
+        <TaskText completed={completed}>{text}</TaskText>
         <ControlWrapper>
-        {onDelete && (
-          <CloseButton 
-            onClick={onDelete}
-            aria-label="Удалить задачу"
-          >
-            ×
-          </CloseButton>
-        )}
-        <TaskCheckBox
-          checked={completed} 
-          onChange={onChange}
-          aria-label={completed ? 'Отметить как невыполненное' : 'Отметить как выполненное'}
-        />
-      </ControlWrapper>         
+            <TaskCheckBox
+                checked={completed} 
+                onChange={onChange}
+                aria-label={completed ? 'Отметить как невыполненное' : 'Отметить как выполненное'}
+            />
+            {onDelete && (
+                <CloseButton 
+                    onClick={onDelete}
+                    aria-label="Удалить задачу"
+                >
+                    ×
+                </CloseButton>
+            )}
+        </ControlWrapper>         
     </StyledItem>
   )
 }

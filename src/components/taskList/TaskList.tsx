@@ -13,7 +13,7 @@ interface Task {
 
 const CATEGORIES = ['Работа', 'Личное', 'Учеба'];
 const FILTER_OPTIONS = ['Все задачи', 'Выполненные задачи', 'Невыполненные задачи'];
-type FilterOption = typeof FILTER_OPTIONS[number];
+type FilterOption = 'Все задачи' | 'Выполненные задачи' | 'Невыполненные задачи';
 
 const TaskList = () => {
     const [tasks, setTasks] = useState<Task[]>(() => {
@@ -28,18 +28,12 @@ const TaskList = () => {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }, [tasks]);
 
-    const visibleTasks = tasks.filter((task: Task) => {
-        if (!selected || selected === 'Все задачи') {
-            return true;
-        }
-        if (selected === 'Выполненные задачи') {
-            return task.completed === true;
-        }
-        if (selected === 'Невыполненные задачи') {
-            return task.completed === false;
-        }
-        return true;
-    });
+    const visibleTasks = useMemo(() => {
+        if (!selected || selected === 'Все задачи') return tasks;
+        return tasks.filter(task =>
+            selected === 'Выполненные задачи' ? task.completed : !task.completed
+        );
+    }, [tasks, selected]);
 
     const [realizeCount, unrealizeCount] = useMemo(() => {
         let realized = 0;

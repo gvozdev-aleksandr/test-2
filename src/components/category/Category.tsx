@@ -4,6 +4,7 @@ interface CategoryProps {
   categories: string[];
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
+  disabled?: boolean;
 }
 
 const Category = ({ categories, selectedCategory, onCategoryChange }: CategoryProps) => {
